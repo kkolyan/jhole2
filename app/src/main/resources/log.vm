@@ -1,0 +1,104 @@
+#* @vtlvariable name="request" type="javax.servlet.http.HttpServletRequest" *#
+#* @vtlvariable name="log" type="net.kkolyan.jhole2.log.H2ApplicationLogger" *#
+<html>
+<head>
+
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .black-bottom td {
+            border-bottom: solid 1px black;
+        }
+
+        td, th {
+            border: solid 1px #CCC;
+            border-top: none;
+        }
+
+        table form {
+            display: inline;
+        }
+
+        ul.error {
+            border: red 3px solid;
+            font-weight: bold;
+        }
+
+        .weak {
+            padding: 0 10px;
+            margin: 0;
+            color: #CCC;
+        }
+
+        td label {
+            margin: 0;
+        }
+
+        td {
+            padding: 0 5px;
+        }
+
+        a.selected {
+            font-weight: bold;
+            background: #e1e1e1;
+            padding: 0 5px;
+        }
+
+        form * {
+            display: block;
+        }
+    </style>
+    <script type="text/javascript">
+        function queryKeyPress() {
+            if (event.ctrlKey && event.keyCode == 10) {
+                document.queryForm.submit();
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+#set($query = $request.getParameter('query'))
+<select onchange="document.queryForm.query.value = this.options[this.selectedIndex].text;">
+    #set($qs = $log.query('select distinct q from (select q,time from q_hist order by time desc)').rows)
+    #foreach($q in $qs)
+        <option>$q.get(0)</option>
+    #end
+</select>
+<form name="queryForm">
+    <label>
+        <textarea name="query" rows="10" cols="200" onkeypress="return queryKeyPress()">#if($query)$query#end</textarea>
+    </label>
+    <input type="submit" value="Execute"/>
+</form>
+<table>
+    #if($query)
+        #set($result = $log.query($request.getParameter('query')))
+        #if($result.exception)
+            <pre style="color: #860000">$result.exception</pre>
+        #else
+            <tr class="black-top">
+                #foreach($column in $result.columns)
+                    <th>$column</th>
+                #end
+            </tr>
+            #foreach($row in $result.rows)
+                <tr class="black-bottom">
+                    #foreach($cell in $row)
+                        <td>
+                            <pre>#if($cell)$cell#else&lt;NULL&gt;#end</pre>
+                        </td>
+                    #end
+                </tr>
+            #end
+        #end
+    #end
+</table>
+</body>
+</html>

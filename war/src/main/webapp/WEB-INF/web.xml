@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+    <servlet>
+        <servlet-name>DualServlet</servlet-name>
+        <servlet-class>net.kkolyan.jhole2.war.dual.StreamingServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DualServlet</servlet-name>
+        <url-pattern>/dual/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Monitoring</servlet-name>
+        <servlet-class>net.kkolyan.jhole2.war.dual.MonitoringServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Monitoring</servlet-name>
+        <url-pattern>/monitoring/*</url-pattern>
+    </servlet-mapping>
+
+    <listener>
+        <listener-class>net.kkolyan.jhole2.war.dual.SessionManager</listener-class>
+    </listener>
+
+
+    <!--<security-constraint>-->
+        <!--<web-resource-collection>-->
+            <!--<web-resource-name>all</web-resource-name>-->
+            <!--<url-pattern>/*</url-pattern>-->
+        <!--</web-resource-collection>-->
+        <!--<auth-constraint>-->
+            <!--<role-name>jhole-user</role-name>-->
+        <!--</auth-constraint>-->
+    <!--</security-constraint>-->
+
+    <!--<login-config>-->
+        <!--<auth-method>DIGEST</auth-method>-->
+        <!--<realm-name>JHole</realm-name>-->
+    <!--</login-config>-->
+
+    <!--<security-role>-->
+        <!--<role-name>jhole-user</role-name>-->
+    <!--</security-role>-->
+</web-app>

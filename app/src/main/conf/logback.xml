@@ -1,0 +1,31 @@
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+
+    <timestamp key="ts" datePattern="yyyyMMdd'T'HHmmss"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+          <level>ALL</level>
+        </filter>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} | %-25thread | %-5level | %-36logger{36} | %msg%n</pattern>
+        </encoder>
+        <file>logs/${ts}.log</file>
+        <prudent>false</prudent>
+        <append>false</append>
+    </appender>
+
+    <root level="WARN">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+    <logger name="net.kkolyan.jhole2" level="INFO"/>
+    <logger name="net.kkolyan.jhole2.http.DualChannelHttpRawEndpoint" level="DEBUG"/>
+    <logger name="net.kkolyan.jhole2.war.dual.SessionController" level="DEBUG"/>
+</configuration>
